@@ -762,9 +762,9 @@ a:hover { color: var(--text); }
   isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem 3rem;
-  padding-block: clamp(1.4rem, 3vw, 2.1rem);
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
   border-bottom: 1px solid var(--line);
 }
 .svc::before {
