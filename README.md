@@ -44,7 +44,6 @@ Your profile already fills the hero, projects, services, experience, About and t
 Still to fill in:
 
 - [ ] When ready: Medium posts, Shorts and Reels (swap in the `media-tabs` template), plus their profile links in Contact
-- [ ] A larger photo when you have one (about 1000 px wide): replace `assets/photo.jpg`
 
 ### Adding images
 
