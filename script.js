@@ -357,74 +357,90 @@
     if (reduce) drawStatic(); else start();
   })();
 
-  /* ---------- World map: India to client regions ---------- */
+  /* ---------- World map: India to the countries I've worked with ---------- */
   (function worldMap() {
-    // Land dots on a 2-degree grid (Natural Earth 110m via world-atlas), one bit per cell, row by row from 81N.
-    var WORLD = { cols: 180, rows: 69, step: 2, latTop: 81, bits: "AAAAAAA9/v///4AAPwAAAADwAAAAAAAAAAACFB5////wAAZAAAAAAAAAAAAAAAAABNmYAA///wAAAAAA4ABf4AGAAAAAAADwAQAAP//wAAAAAGAAf/gAAAAAAAAAHfzH+AP//AAAAAAMDd///8D4AAAH/gof8x3wH//gAAD4AADf//////wQwf///w59h4H/wAAAP/yf//////////e//////+B2H/AuAA/+P///////////AD/////5Q4D8AcAB9/f//////////+Af/////gHAB4AAAH5///////////78AP8f///gHkAAAAAH5H/////////+GAABgB///wH+AAAAEAw/////////8AYAACAA///8D/AAAAECh/////////4A4AAAABf///v/gAAAZD//////////8AwAAAAAP///n/wAAAXv///////////AgAAAAAL////4QAAAA///////////9AAAAAAAB////48AAAD///////////8AAAAAAAD////9AAAAB//4fH//////4AAAAAAAD////kAAAAB9PwPf//////xgAAAAAAD////gAAAAfyzxHP/////+CAAAAAAAD///+AAAAAfCCf/n/////cCAAAAAAAB///8AAAAAPAxf/n////+MAAAAAAAAB///8AAAAAA+AA///////GMAAAAAAAAf//4AAAAAP+AA///////BgAAAAAAAAP//wAAAAAf/zB///////hAAAAAAAAAL/5gAAAAAf////f/////gAAAAAAAAAH/AQAAAAA///+/P/////gAAAAAAAAAB+AQAAAAB///+/h/////AAAAAAAAAAA+AAAAAAD////f+D///+gAAAAAAAAAAeAIAAAAD////P/B/7/4AAAAAAAAAAAfEGAAAAD////v+A/j+AAAAAAAAAAAAH8EIAAAD////n8AfB+AgAAAAAAAAAABcAAAAAD////3wAcBfAgAAAAAAAAAAAPAAAAAD////7AAcAfgwAAAAAAAAAAABAAAAAD////8QAMAXgIAAAAAAAAAAABD+AAAB/////gAMASBQAAAAAAAAAAAAX/AAAB/////gACAQAYAAAAAAAAAAAAH/oAAAfv///AAAAICIAAAAAAAAAAAAH/8AAAAD///AAAAsGAAAAAAAAAAAAAH/+AAAAB//+AAAAcOAAAAAAAAAAAAAP/+AAAAB//4AAAAMeAAAAAAAAAAAAAP//wAAAB//4AAAAMcgsAAAAAAAAAAAf//+AAAA//wAAAAGEA/CAAAAAAAAAAf///AAAA//gAAAABAAH5AAAAAAAAAAP///gAAAf/wAAAAAYAHQQAAAAAAAAAH///AAAAf/wAAAAAAAAIAAAAAAAAAAH//+AAAAf/wAAAAAAAhAAAAAAAAAAAD//+AAAA//wgAAAAAFxAAAAAAAAAAAB//+AAAA//xgAAAAAP5gAAAAAAAAAAAf/8AAAA//DgAAAAAf/gAAAAAAAAAAAf/8AAAA/+DAAAAAA//wAAAAAAAAAAAf/4AAAAf/DAAAAAH//4AAAAAAAAAAAf/gAAAAf/DAAAAAH//8AAAAAAAAAAAf/AAAAAf8AAAAAAH//+AAAAAAAAAAA//AAAAAP8AAAAAAH//+AAAAAAAAAAA/+AAAAAH4AAAAAAD//+AAAAAAAAAAA/8AAAAAH4AAAAAAD8/8AAAAAAAAAAA/4AAAAAGAAAAAAADAH8AAAAAAAAAAA/gAAAAAAAAAAAAAAAD4AAAAAAAAAAB/gAAAAAAAAAAAAAAADQAGAAAAAAAAB+AAAAAAAAAAAAAAAAAAAEAAAAAAAAB8AAAAAAAAAAAAAAAAAQAIAAAAAAAAB4AAAAAAAAAAAAAAAAAAAwAAAAAAAABwAAAAAAAAAAAAAAAAAABgAAAAAAAAD4AAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAADxgAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" };
+    // 1-degree grid from 81N to 57S (Natural Earth 110m via world-atlas), run-length encoded:
+    // A = sea, B = land, C = worked with, D = home (India), E = open to; each letter is followed by a lowercase base-36 run length.
+    var WORLD = { cols: 360, rows: 138, latTop: 81, rle: "A2cB7A6BdA3B1fAzB2A1B3AmB4A15B7A4mBlA8B1bAuB8A2B4A1wB7A43B3A5B5A1B3A3B4A1BdA2B1hAwB7A29B5A3sB3A4B1AgB1A6BaA9B1eAxB4A4B1A28B2A3pB4A8B2A7B3A2B5A2BaA9B1dA2eB4AwBbA3nB7A1B3A5B3A2B2A1B6A1B5AmB13A25B6ArBoAnB8A2tB2AmB5A2B1ApB11A24B3ArBoA3iB8A9B2A4B4A1B5A2B3A2B2A1B3AmBzA23B3AoBwA1B5A4B4AdB3A2kB6A1B9A1B3A3B5A1B2A4B9A3B1AmBxA22B4AdB4A8B1cAaB7AyB1A1jB4A1BeA5B3A1B3A3BgA1B1AhBxA22B4AcB4A1B2A1B1hA3B1A2B2A1BdA1cCaA12BaA7B4A3BkAeBtA2B1A1bE7A10B6A1B2eA11CmB2A4BfA3BeA3B4A1B4A5B4A5BaAdB2A1BrA16EdB2ArB4A3B6A1B2mA2B8A2B2AbCqBrA6B3A7B1A3B6A2B5A6B7AgBoA18EcBaAeB2A3BaA2B5A1B31AcCnB1hA1B6A4B2A2B9AaBlA1bEgBbA3B2A2BpA2B32A1B3A6C1A2ClB1mA9BcA9BiAjE1AsEhB3A3B5A3BsA1B2zA1B7A4CrB1iA1B1AbB6A3B2AaBdAhE9AqEaA3E5B5A5B3wA6B1A8C1A3CkB1hA2B4A4B3A1B8AeBbAjE7AqEaA3E6B5A2B3xAaC2A9CkB1eA5B2A2B1A9B7AeBaA1eEbA2E8B45AgCoB1dA8B2A4B1A8B2AhB7A1dEcA3EaB42A1B1AfCpB1bAgB6AnB6A1cEcA4E9B3jA2B3A2B9AmChA2C5B1bAgB8AoB3A1cEdA4E6B3jA7B9ArC8A2C2AaC2B2C1B14AhB9A3B2A1xEdA7E2A1B3dA2B4A5B3A14C3AgC4B15AfBaA1B4A1mC2A9E3A2E6A7E3B36AiB3A14C2A1C3AiC1B14AgBfA1kC4AcE1A1E5A5E1A1E3B35AhB6A11C2AqB18AbBfA1kC3AbE3A1E4A5E7B32AiB7AyC2AtC2B18A8BiA1iC4AaE2A1E3A7E6B31AjB7AxC1AxB1dA2BnA1cE2C1A2C3AaC1A6E3A1B3E3B33AjB5A1uB1A3B1bA3BnA1bE3A3C3A7C7EaB39A1B1AdB4A20B1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" };
     var fig = $("[data-map]");
     var canvas = fig && $("canvas", fig);
     var ctx = canvas && canvas.getContext && canvas.getContext("2d");
-    if (!ctx || !window.atob) return;
+    if (!ctx) return;
 
-    var raw = atob(WORLD.bits);
-    var bytes = new Uint8Array(raw.length);
-    for (var b = 0; b < raw.length; b++) bytes[b] = raw.charCodeAt(b);
-    function isLand(c, r) { var i = r * WORLD.cols + c; return (bytes[i >> 3] >> (7 - (i & 7))) & 1; }
+    var cells = new Uint8Array(WORLD.cols * WORLD.rows);
+    var re = /([A-E])([0-9a-z]+)/g, m, at = 0;
+    while ((m = re.exec(WORLD.rle))) {
+      var len = parseInt(m[2], 36), v = m[1].charCodeAt(0) - 65;
+      cells.fill(v, at, at + len);
+      at += len;
+    }
 
     var css = getComputedStyle(root);
     function token(name, fallback) { return css.getPropertyValue(name).trim() || fallback; }
     var C = {
-      dot: token("--line-2", "#363c49"),
+      land: token("--line-2", "#363c49"),
       amber: token("--amber", "#f5b342"),
-      ice: token("--ice", "#9ccff0"),
-      text: token("--text", "#eef0f3"),
+      green: token("--green", "#4ade9c"),
       bg: token("--bg", "#0e1015")
     };
+    // Drawing order and colour for each cell state.
+    var RANK = [0, 1, 3, 4, 2];
+    var STYLE = [null, { c: C.land, a: 1, s: 1 }, { c: C.green, a: 1, s: 1.25 }, { c: C.amber, a: 1, s: 1.25 }, { c: C.green, a: 0.38, s: 1.1 }];
 
     var pins = $$(".map-pin", fig).map(function (el) {
-      return { el: el, lat: +el.getAttribute("data-lat"), lon: +el.getAttribute("data-lon"), home: el.classList.contains("is-home") };
+      return {
+        el: el, lat: +el.getAttribute("data-lat"), lon: +el.getAttribute("data-lon"),
+        home: el.classList.contains("is-home"), open: el.classList.contains("is-open")
+      };
     });
     var home = pins.filter(function (p) { return p.home; })[0];
-    var clients = pins.filter(function (p) { return !p.home; });
+    var targets = pins.filter(function (p) { return !p.home && !p.open; });
     if (!home) return;
 
-    var W = 0, H = 0, dots = null, active = -1;
-    var spanLat = WORLD.rows * WORLD.step;
-    function project(lat, lon) {
-      return { x: (lon + 180) / 360 * W, y: (WORLD.latTop - lat) / spanLat * H };
-    }
-
-    // Place the HTML labels as percentages so they track the canvas at any width.
+    var spanLat = WORLD.rows;
     pins.forEach(function (p) {
       p.el.style.left = ((p.lon + 180) / 360 * 100).toFixed(3) + "%";
       p.el.style.top = ((WORLD.latTop - p.lat) / spanLat * 100).toFixed(3) + "%";
     });
 
+    var W = 0, H = 0, dots = null, active = -1;
+    function project(lat, lon) { return { x: (lon + 180) / 360 * W, y: (WORLD.latTop - lat) / spanLat * H }; }
+
     function arcPoint(a, c, t, lift) {
-      var mx = (a.x + c.x) / 2, my = (a.y + c.y) / 2;
       var dist = Math.hypot(c.x - a.x, c.y - a.y);
-      var cx = mx, cy = my - dist * lift;
+      var cx = (a.x + c.x) / 2, cy = (a.y + c.y) / 2 - dist * lift;
       var u = 1 - t;
       return { x: u * u * a.x + 2 * u * t * cx + t * t * c.x, y: u * u * a.y + 2 * u * t * cy + t * t * c.y };
     }
 
-    function drawDots() {
+    function drawDots(dpr) {
       dots = document.createElement("canvas");
-      var dpr = Math.min(2, window.devicePixelRatio || 1);
       dots.width = canvas.width; dots.height = canvas.height;
       var d = dots.getContext("2d");
       d.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var cw = W / WORLD.cols, ch = H / WORLD.rows;
-      var r = Math.max(0.6, Math.min(cw, ch) * 0.26);
-      d.fillStyle = C.dot;
-      for (var row = 0; row < WORLD.rows; row++) {
-        for (var col = 0; col < WORLD.cols; col++) {
-          if (!isLand(col, row)) continue;
+      // On narrow screens, merge 2x2 cells so the dots stay legible.
+      var block = W / WORLD.cols < 2.4 ? 2 : 1;
+      var cw = W / WORLD.cols * block, ch = H / WORLD.rows * block;
+      var base = Math.max(0.55, Math.min(cw, ch) * 0.3);
+      for (var r = 0; r < WORLD.rows; r += block) {
+        for (var c = 0; c < WORLD.cols; c += block) {
+          var best = 0;
+          for (var dr = 0; dr < block; dr++) for (var dc = 0; dc < block; dc++) {
+            var rr = r + dr, cc = c + dc;
+            if (rr >= WORLD.rows || cc >= WORLD.cols) continue;
+            var v = cells[rr * WORLD.cols + cc];
+            if (RANK[v] > RANK[best]) best = v;
+          }
+          if (!best) continue;
+          var st = STYLE[best];
+          d.globalAlpha = st.a;
+          d.fillStyle = st.c;
           d.beginPath();
-          d.arc((col + 0.5) * cw, (row + 0.5) * ch, r, 0, Math.PI * 2);
+          d.arc((c / block + 0.5) * cw, (r / block + 0.5) * ch, base * st.s, 0, Math.PI * 2);
           d.fill();
         }
       }
+      d.globalAlpha = 1;
     }
 
     function resize() {
@@ -433,74 +449,77 @@
       if (!W || !H) return;
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawDots();
+      drawDots(dpr);
       draw(performance.now());
     }
 
-    var revealAt = reduce ? -1e9 : null; // set when the map scrolls into view
-    var DRAW_MS = 1300, STAGGER = 350, PULSE_MS = 2600;
+    var revealAt = null;
+    var DRAW_MS = 1200, STAGGER = 260, PULSE_MS = 2800;
 
     function draw(now) {
       if (!dots) return;
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(dots, 0, 0, W, H);
       var a = project(home.lat, home.lon);
-      var lift = W < 500 ? 0.22 : 0.3;
-      var lw = W < 500 ? 1.2 : 1.8;
+      var small = W < 600;
+      var lift = small ? 0.2 : 0.28;
+      var lw = small ? 1.1 : 1.6;
 
-      clients.forEach(function (p, i) {
+      targets.forEach(function (p, i) {
         var c = project(p.lat, p.lon);
         var elapsed = revealAt === null ? 0 : now - revealAt - i * STAGGER;
         var prog = Math.max(0, Math.min(1, elapsed / DRAW_MS));
         prog = 1 - Math.pow(1 - prog, 3);
-        var dim = active >= 0 && active !== i + 1;
+        var focus = active === i + 1, dim = active > 0 && !focus;
         if (prog > 0) {
+          var grad = ctx.createLinearGradient(a.x, a.y, c.x, c.y);
+          grad.addColorStop(0, C.amber);
+          grad.addColorStop(1, C.green);
           ctx.beginPath();
-          var steps = 48;
+          var steps = 56;
           for (var s = 0; s <= steps * prog; s++) {
             var pt = arcPoint(a, c, s / steps, lift);
             if (s === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
           }
-          ctx.strokeStyle = C.amber;
-          ctx.globalAlpha = dim ? 0.2 : (active === i + 1 ? 1 : 0.75);
-          ctx.lineWidth = active === i + 1 ? lw + 0.8 : lw;
+          ctx.strokeStyle = grad;
+          ctx.globalAlpha = dim ? 0.15 : (focus ? 1 : 0.7);
+          ctx.lineWidth = focus ? lw + 0.9 : lw;
           ctx.lineCap = "round";
           ctx.stroke();
           ctx.globalAlpha = 1;
         }
-        // A pulse runs along each finished line.
         if (prog >= 1 && !reduce && !dim) {
-          var t = ((now - revealAt - i * 700) % PULSE_MS) / PULSE_MS;
+          var t = ((now - revealAt - i * 470) % PULSE_MS) / PULSE_MS;
           var q = arcPoint(a, c, t, lift);
           ctx.beginPath();
-          ctx.arc(q.x, q.y, lw + 1.2, 0, Math.PI * 2);
-          ctx.fillStyle = C.amber;
+          ctx.arc(q.x, q.y, lw + 1.1, 0, Math.PI * 2);
+          ctx.fillStyle = C.green;
           ctx.globalAlpha = Math.sin(t * Math.PI);
           ctx.fill();
           ctx.globalAlpha = 1;
         }
-        // Client marker appears when its line arrives.
         if (prog >= 1) {
           ctx.beginPath();
-          ctx.arc(c.x, c.y, lw + 2.2, 0, Math.PI * 2);
+          ctx.arc(c.x, c.y, lw + 2.4, 0, Math.PI * 2);
           ctx.fillStyle = C.bg;
           ctx.fill();
           ctx.lineWidth = 1.5;
-          ctx.strokeStyle = dim ? C.dot : C.ice;
+          ctx.strokeStyle = C.green;
+          ctx.globalAlpha = dim ? 0.35 : 1;
           ctx.stroke();
           ctx.beginPath();
           ctx.arc(c.x, c.y, lw * 0.9, 0, Math.PI * 2);
-          ctx.fillStyle = dim ? C.dot : C.ice;
+          ctx.fillStyle = C.green;
           ctx.fill();
+          ctx.globalAlpha = 1;
           p.el.classList.add("is-shown");
         }
       });
 
-      // Home marker with a slow ring.
-      var ring = reduce ? 0 : ((now % 2400) / 2400);
+      var ring = reduce ? 0 : (now % 2400) / 2400;
       if (ring) {
         ctx.beginPath();
-        ctx.arc(a.x, a.y, 4 + ring * (W < 500 ? 8 : 14), 0, Math.PI * 2);
+        ctx.arc(a.x, a.y, 4 + ring * (small ? 8 : 14), 0, Math.PI * 2);
         ctx.strokeStyle = C.amber;
         ctx.globalAlpha = 1 - ring;
         ctx.lineWidth = 1.5;
@@ -525,25 +544,23 @@
       requestAnimationFrame(frame);
     }
 
-    home.el.classList.add("is-shown");
-    if (reduce || !hasIO) {
-      revealAt = -1e9;
-      clients.forEach(function (p) { p.el.classList.add("is-shown"); });
+    function reveal(at) {
+      revealAt = at;
+      pins.forEach(function (p) { if (p.home || p.open) p.el.classList.add("is-shown"); });
     }
+    if (reduce || !hasIO) reveal(-1e9);
     if (hasIO) {
       new IntersectionObserver(function (entries) {
         visible = entries[0].isIntersecting;
-        if (visible && revealAt === null && entries[0].intersectionRatio > 0.3) revealAt = performance.now();
-        if (visible && revealAt === null) revealAt = performance.now() + 250;
+        if (visible && revealAt === null) reveal(performance.now() + 200);
         start();
         if (reduce) draw(performance.now());
       }, { threshold: [0, 0.3] }).observe(fig);
     }
     doc.addEventListener("visibilitychange", start);
 
-    // Hovering or focusing a region highlights its line.
-    function setActive(i) { active = i; if (reduce || !running) draw(performance.now()); }
-    $$(".region").forEach(function (li) {
+    function setActive(i) { active = i; if (!running) draw(performance.now()); }
+    $$(".region[data-region]").forEach(function (li) {
       var i = +li.getAttribute("data-region");
       li.addEventListener("pointerenter", function () { setActive(i); });
       li.addEventListener("pointerleave", function () { setActive(-1); });

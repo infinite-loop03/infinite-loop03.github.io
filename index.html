@@ -70,7 +70,7 @@
         </div>
         <div class="wrap scope-readout">
           <span></span>
-          <span>Delivered for clients in the UK, US, Europe and India</span>
+          <span>Worked with teams in the UK, Europe, the US, Brazil, Japan and India</span>
         </div>
       </div>
     </section>
@@ -332,37 +332,89 @@
       <div class="wrap">
         <div class="section-head">
           <h2 class="stretch" id="regions-title">Across time zones</h2>
-          <p class="section-note">Teams I've delivered for, and the time where they are right now.</p>
+          <p class="section-note">Teams I've worked with, and where I'm open to working next. The clocks are live.</p>
         </div>
 
-        <!-- Each marker sits at data-lat / data-lon. data-pos places its label: n, s, e, w, nw, ne, sw or se. -->
+        <!-- Markers sit at data-lat / data-lon. data-pos places the label: n, s, e, w, nw, ne, sw, se (centred if left out).
+             Lines are drawn from the .is-home pin to every pin that isn't .is-open. The country colours come from the
+             WORLD grid in script.js. -->
         <figure class="map" data-map>
           <canvas class="map-canvas" aria-hidden="true"></canvas>
-          <span class="map-pin is-home" data-lat="22.5" data-lon="78.9" data-pos="s" aria-hidden="true">India</span>
-          <span class="map-pin" data-lat="53" data-lon="-1.5" data-pos="nw" aria-hidden="true">UK</span>
-          <span class="map-pin" data-lat="49" data-lon="10.5" data-pos="se" aria-hidden="true">Europe</span>
-          <span class="map-pin" data-lat="39" data-lon="-96" data-pos="n" aria-hidden="true">US</span>
-          <figcaption class="sr-only">World map with lines from India, where I'm based, to clients in the UK, Europe and the US.</figcaption>
+          <span class="map-pin is-home" data-lat="22.8" data-lon="79.5" data-pos="s" aria-hidden="true">India</span>
+          <span class="map-pin" data-lat="52.8" data-lon="-1.8" data-pos="w" aria-hidden="true">UK</span>
+          <span class="map-pin" data-lat="52.3" data-lon="5.5" data-pos="n" aria-hidden="true">Netherlands</span>
+          <span class="map-pin" data-lat="51.1" data-lon="10.3" data-pos="se" aria-hidden="true">Germany</span>
+          <span class="map-pin" data-lat="39" data-lon="-98" data-pos="n" aria-hidden="true">US</span>
+          <span class="map-pin" data-lat="-10.7" data-lon="-53.2" data-pos="s" aria-hidden="true">Brazil</span>
+          <span class="map-pin" data-lat="37.5" data-lon="137.7" data-pos="e" aria-hidden="true">Japan</span>
+          <span class="map-pin is-open" data-lat="-25.8" data-lon="134.3" aria-hidden="true">Australia</span>
+          <span class="map-pin is-open" data-lat="-41.6" data-lon="173" data-pos="w" aria-hidden="true">New Zealand</span>
+          <span class="map-pin is-open" data-lat="23.9" data-lon="54.2" data-pos="w" aria-hidden="true">UAE</span>
+          <figcaption class="sr-only">World map. Lines run from India, where I'm based, to the UK, the Netherlands, Germany, the US, Brazil and Japan, where I've worked with teams. Australia, New Zealand, the UAE and most of Europe are marked as places I'm open to working with.</figcaption>
         </figure>
 
-        <ul class="regions">
-          <li class="region is-home" data-region="0">
-            <span class="region-name">India</span>
-            <span class="region-meta"><strong data-tz="Asia/Kolkata">--:--</strong> where I'm based</span>
-          </li>
-          <li class="region" data-region="1">
-            <span class="region-name">UK</span>
-            <span class="region-meta"><strong data-tz="Europe/London">--:--</strong> in London</span>
-          </li>
-          <li class="region" data-region="2">
-            <span class="region-name">Europe</span>
-            <span class="region-meta"><strong data-tz="Europe/Berlin">--:--</strong> in Berlin</span>
-          </li>
-          <li class="region" data-region="3">
-            <span class="region-name">US</span>
-            <span class="region-meta"><strong data-tz="America/New_York">--:--</strong> in New York</span>
-          </li>
+        <ul class="map-legend" aria-hidden="true">
+          <li><span class="swatch swatch--home"></span>Based in</li>
+          <li><span class="swatch swatch--worked"></span>Worked with</li>
+          <li><span class="swatch swatch--open"></span>Open to</li>
         </ul>
+
+        <div class="regions-groups">
+          <div class="regions-group">
+            <h3 class="regions-title">Worked with</h3>
+            <ul class="regions">
+              <li class="region is-home" data-region="0">
+                <span class="region-name">India</span>
+                <span class="region-meta"><strong data-tz="Asia/Kolkata">--:--</strong> where I'm based</span>
+              </li>
+              <li class="region" data-region="1">
+                <span class="region-name">UK</span>
+                <span class="region-meta"><strong data-tz="Europe/London">--:--</strong> in London</span>
+              </li>
+              <li class="region" data-region="2">
+                <span class="region-name">Netherlands</span>
+                <span class="region-meta"><strong data-tz="Europe/Amsterdam">--:--</strong> in Amsterdam</span>
+              </li>
+              <li class="region" data-region="3">
+                <span class="region-name">Germany</span>
+                <span class="region-meta"><strong data-tz="Europe/Berlin">--:--</strong> in Berlin</span>
+              </li>
+              <li class="region" data-region="4">
+                <span class="region-name">US</span>
+                <span class="region-meta"><strong data-tz="America/New_York">--:--</strong> in New York</span>
+              </li>
+              <li class="region" data-region="5">
+                <span class="region-name">Brazil</span>
+                <span class="region-meta"><strong data-tz="America/Sao_Paulo">--:--</strong> in São Paulo</span>
+              </li>
+              <li class="region" data-region="6">
+                <span class="region-name">Japan</span>
+                <span class="region-meta"><strong data-tz="Asia/Tokyo">--:--</strong> in Tokyo</span>
+              </li>
+            </ul>
+          </div>
+          <div class="regions-group">
+            <h3 class="regions-title">Open to</h3>
+            <ul class="regions regions--open">
+              <li class="region">
+                <span class="region-name">Europe</span>
+                <span class="region-meta">The EU, plus Norway, Switzerland and Iceland</span>
+              </li>
+              <li class="region">
+                <span class="region-name">UAE</span>
+                <span class="region-meta"><strong data-tz="Asia/Dubai">--:--</strong> in Dubai</span>
+              </li>
+              <li class="region">
+                <span class="region-name">Australia</span>
+                <span class="region-meta"><strong data-tz="Australia/Sydney">--:--</strong> in Sydney</span>
+              </li>
+              <li class="region">
+                <span class="region-name">New Zealand</span>
+                <span class="region-meta"><strong data-tz="Pacific/Auckland">--:--</strong> in Auckland</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -518,8 +570,8 @@
               <dd>AWS Certified Developer Associate<br>AWS Certified Solutions Architect</dd>
               <dt>Practice</dt>
               <dd><a href="https://leetcode.com/u/loop-infinite03/" target="_blank" rel="noopener">295+ problems solved on LeetCode</a>, with the 100 Days Badge for 2026</dd>
-              <dt>Clients</dt>
-              <dd>UK, US, Europe and India, across financial services and e-commerce</dd>
+              <dt>Worked with</dt>
+              <dd>UK, Netherlands, Germany, US, Brazil, Japan and India</dd>
               <dt>Works</dt>
               <dd>Co-located, remote and hybrid, across time zones</dd>
             </dl>

@@ -808,6 +808,10 @@ a:hover { color: var(--text); }
   font-variation-settings: "wght" 500, "wdth" 100;
   white-space: nowrap;
   pointer-events: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(14, 16, 21, 0.82);
+  line-height: 1.4;
   opacity: 0;
   transition: opacity 0.6s var(--ease);
   --tx: -50%;
@@ -815,7 +819,9 @@ a:hover { color: var(--text); }
   transform: translate(var(--tx), var(--ty));
 }
 .map-pin.is-shown { opacity: 1; }
+.map-pin { color: var(--green); }
 .map-pin.is-home { color: var(--amber); }
+.map-pin.is-open { color: rgba(74, 222, 156, 0.6); font-variation-settings: "wght" 400, "wdth" 100; }
 .map-pin[data-pos="n"]  { --ty: calc(-100% - 12px); }
 .map-pin[data-pos="s"]  { --ty: 12px; }
 .map-pin[data-pos="e"]  { --tx: 12px; }
@@ -825,10 +831,48 @@ a:hover { color: var(--text); }
 .map-pin[data-pos="sw"] { --tx: calc(-100% - 8px); --ty: 6px; }
 .map-pin[data-pos="se"] { --tx: 8px; --ty: 6px; }
 
+.map-legend {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: 0.6875rem;
+}
+.js .map-legend { display: flex; }
+.map-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.swatch--home { background: var(--amber); }
+.swatch--worked { background: var(--green); }
+.swatch--open { background: rgba(74, 222, 156, 0.38); }
+
+.regions-groups {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+}
+.regions-title {
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
 .regions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid var(--line);
@@ -848,7 +892,9 @@ a:hover { color: var(--text); }
   font-variation-settings: "wght" 600, "wdth" 100;
   letter-spacing: -0.02em;
 }
+.region-name { color: var(--green); }
 .region.is-home .region-name { color: var(--amber); }
+.regions--open .region-name { color: rgba(74, 222, 156, 0.7); }
 .region-meta {
   color: var(--muted);
   font-size: 0.9375rem;
@@ -1379,7 +1425,7 @@ a:hover { color: var(--text); }
   .reel:hover .reel-thumb { transform: translateY(-8px) rotate(-1.2deg); }
   .reel:nth-child(even):hover .reel-thumb { transform: translateY(-8px) rotate(1.2deg); }
   .chips li:hover { border-color: var(--amber); color: var(--amber); }
-  .region:hover .region-name { color: var(--amber); }
+  .region[data-region]:hover .region-name { color: var(--text); }
   .reel:hover .play {
     border-color: var(--amber);
     background: var(--amber);
