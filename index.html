@@ -327,6 +327,45 @@
       </div>
     </section>
 
+    <!-- ================= REGIONS ================= -->
+    <section class="section" id="regions" aria-labelledby="regions-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="regions-title">Across time zones</h2>
+          <p class="section-note">Teams I've delivered for, and the time where they are right now.</p>
+        </div>
+
+        <!-- Each marker sits at data-lat / data-lon. data-pos places its label: n, s, e, w, nw, ne, sw or se. -->
+        <figure class="map" data-map>
+          <canvas class="map-canvas" aria-hidden="true"></canvas>
+          <span class="map-pin is-home" data-lat="22.5" data-lon="78.9" data-pos="s" aria-hidden="true">India</span>
+          <span class="map-pin" data-lat="53" data-lon="-1.5" data-pos="nw" aria-hidden="true">UK</span>
+          <span class="map-pin" data-lat="49" data-lon="10.5" data-pos="se" aria-hidden="true">Europe</span>
+          <span class="map-pin" data-lat="39" data-lon="-96" data-pos="n" aria-hidden="true">US</span>
+          <figcaption class="sr-only">World map with lines from India, where I'm based, to clients in the UK, Europe and the US.</figcaption>
+        </figure>
+
+        <ul class="regions">
+          <li class="region is-home" data-region="0">
+            <span class="region-name">India</span>
+            <span class="region-meta"><strong data-tz="Asia/Kolkata">--:--</strong> where I'm based</span>
+          </li>
+          <li class="region" data-region="1">
+            <span class="region-name">UK</span>
+            <span class="region-meta"><strong data-tz="Europe/London">--:--</strong> in London</span>
+          </li>
+          <li class="region" data-region="2">
+            <span class="region-name">Europe</span>
+            <span class="region-meta"><strong data-tz="Europe/Berlin">--:--</strong> in Berlin</span>
+          </li>
+          <li class="region" data-region="3">
+            <span class="region-name">US</span>
+            <span class="region-meta"><strong data-tz="America/New_York">--:--</strong> in New York</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <!-- ================= WRITING AND VIDEOS ================= -->
     <section class="section" id="media" aria-labelledby="media-title">
       <div class="wrap">

@@ -29,10 +29,16 @@
     } catch (e) { return; }
     var short = $$("[data-clock]");
     var long = $$("[data-clock-s]");
+    var zoned = $$("[data-tz]").map(function (el) {
+      try {
+        return { el: el, fmt: new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: el.getAttribute("data-tz") }) };
+      } catch (e) { return null; }
+    }).filter(Boolean);
     function tick() {
       var now = new Date();
       short.forEach(function (el) { el.textContent = hm.format(now); });
       long.forEach(function (el) { el.textContent = hms.format(now); });
+      zoned.forEach(function (z) { z.el.textContent = z.fmt.format(now); });
     }
     tick();
     setInterval(tick, 1000);
@@ -349,6 +355,207 @@
     doc.addEventListener("visibilitychange", start);
     resize();
     if (reduce) drawStatic(); else start();
+  })();
+
+  /* ---------- World map: India to client regions ---------- */
+  (function worldMap() {
+    // Land dots on a 2-degree grid (Natural Earth 110m via world-atlas), one bit per cell, row by row from 81N.
+    var WORLD = { cols: 180, rows: 69, step: 2, latTop: 81, bits: "AAAAAAA9/v///4AAPwAAAADwAAAAAAAAAAACFB5////wAAZAAAAAAAAAAAAAAAAABNmYAA///wAAAAAA4ABf4AGAAAAAAADwAQAAP//wAAAAAGAAf/gAAAAAAAAAHfzH+AP//AAAAAAMDd///8D4AAAH/gof8x3wH//gAAD4AADf//////wQwf///w59h4H/wAAAP/yf//////////e//////+B2H/AuAA/+P///////////AD/////5Q4D8AcAB9/f//////////+Af/////gHAB4AAAH5///////////78AP8f///gHkAAAAAH5H/////////+GAABgB///wH+AAAAEAw/////////8AYAACAA///8D/AAAAECh/////////4A4AAAABf///v/gAAAZD//////////8AwAAAAAP///n/wAAAXv///////////AgAAAAAL////4QAAAA///////////9AAAAAAAB////48AAAD///////////8AAAAAAAD////9AAAAB//4fH//////4AAAAAAAD////kAAAAB9PwPf//////xgAAAAAAD////gAAAAfyzxHP/////+CAAAAAAAD///+AAAAAfCCf/n/////cCAAAAAAAB///8AAAAAPAxf/n////+MAAAAAAAAB///8AAAAAA+AA///////GMAAAAAAAAf//4AAAAAP+AA///////BgAAAAAAAAP//wAAAAAf/zB///////hAAAAAAAAAL/5gAAAAAf////f/////gAAAAAAAAAH/AQAAAAA///+/P/////gAAAAAAAAAB+AQAAAAB///+/h/////AAAAAAAAAAA+AAAAAAD////f+D///+gAAAAAAAAAAeAIAAAAD////P/B/7/4AAAAAAAAAAAfEGAAAAD////v+A/j+AAAAAAAAAAAAH8EIAAAD////n8AfB+AgAAAAAAAAAABcAAAAAD////3wAcBfAgAAAAAAAAAAAPAAAAAD////7AAcAfgwAAAAAAAAAAABAAAAAD////8QAMAXgIAAAAAAAAAAABD+AAAB/////gAMASBQAAAAAAAAAAAAX/AAAB/////gACAQAYAAAAAAAAAAAAH/oAAAfv///AAAAICIAAAAAAAAAAAAH/8AAAAD///AAAAsGAAAAAAAAAAAAAH/+AAAAB//+AAAAcOAAAAAAAAAAAAAP/+AAAAB//4AAAAMeAAAAAAAAAAAAAP//wAAAB//4AAAAMcgsAAAAAAAAAAAf//+AAAA//wAAAAGEA/CAAAAAAAAAAf///AAAA//gAAAABAAH5AAAAAAAAAAP///gAAAf/wAAAAAYAHQQAAAAAAAAAH///AAAAf/wAAAAAAAAIAAAAAAAAAAH//+AAAAf/wAAAAAAAhAAAAAAAAAAAD//+AAAA//wgAAAAAFxAAAAAAAAAAAB//+AAAA//xgAAAAAP5gAAAAAAAAAAAf/8AAAA//DgAAAAAf/gAAAAAAAAAAAf/8AAAA/+DAAAAAA//wAAAAAAAAAAAf/4AAAAf/DAAAAAH//4AAAAAAAAAAAf/gAAAAf/DAAAAAH//8AAAAAAAAAAAf/AAAAAf8AAAAAAH//+AAAAAAAAAAA//AAAAAP8AAAAAAH//+AAAAAAAAAAA/+AAAAAH4AAAAAAD//+AAAAAAAAAAA/8AAAAAH4AAAAAAD8/8AAAAAAAAAAA/4AAAAAGAAAAAAADAH8AAAAAAAAAAA/gAAAAAAAAAAAAAAAD4AAAAAAAAAAB/gAAAAAAAAAAAAAAADQAGAAAAAAAAB+AAAAAAAAAAAAAAAAAAAEAAAAAAAAB8AAAAAAAAAAAAAAAAAQAIAAAAAAAAB4AAAAAAAAAAAAAAAAAAAwAAAAAAAABwAAAAAAAAAAAAAAAAAABgAAAAAAAAD4AAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAADxgAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" };
+    var fig = $("[data-map]");
+    var canvas = fig && $("canvas", fig);
+    var ctx = canvas && canvas.getContext && canvas.getContext("2d");
+    if (!ctx || !window.atob) return;
+
+    var raw = atob(WORLD.bits);
+    var bytes = new Uint8Array(raw.length);
+    for (var b = 0; b < raw.length; b++) bytes[b] = raw.charCodeAt(b);
+    function isLand(c, r) { var i = r * WORLD.cols + c; return (bytes[i >> 3] >> (7 - (i & 7))) & 1; }
+
+    var css = getComputedStyle(root);
+    function token(name, fallback) { return css.getPropertyValue(name).trim() || fallback; }
+    var C = {
+      dot: token("--line-2", "#363c49"),
+      amber: token("--amber", "#f5b342"),
+      ice: token("--ice", "#9ccff0"),
+      text: token("--text", "#eef0f3"),
+      bg: token("--bg", "#0e1015")
+    };
+
+    var pins = $$(".map-pin", fig).map(function (el) {
+      return { el: el, lat: +el.getAttribute("data-lat"), lon: +el.getAttribute("data-lon"), home: el.classList.contains("is-home") };
+    });
+    var home = pins.filter(function (p) { return p.home; })[0];
+    var clients = pins.filter(function (p) { return !p.home; });
+    if (!home) return;
+
+    var W = 0, H = 0, dots = null, active = -1;
+    var spanLat = WORLD.rows * WORLD.step;
+    function project(lat, lon) {
+      return { x: (lon + 180) / 360 * W, y: (WORLD.latTop - lat) / spanLat * H };
+    }
+
+    // Place the HTML labels as percentages so they track the canvas at any width.
+    pins.forEach(function (p) {
+      p.el.style.left = ((p.lon + 180) / 360 * 100).toFixed(3) + "%";
+      p.el.style.top = ((WORLD.latTop - p.lat) / spanLat * 100).toFixed(3) + "%";
+    });
+
+    function arcPoint(a, c, t, lift) {
+      var mx = (a.x + c.x) / 2, my = (a.y + c.y) / 2;
+      var dist = Math.hypot(c.x - a.x, c.y - a.y);
+      var cx = mx, cy = my - dist * lift;
+      var u = 1 - t;
+      return { x: u * u * a.x + 2 * u * t * cx + t * t * c.x, y: u * u * a.y + 2 * u * t * cy + t * t * c.y };
+    }
+
+    function drawDots() {
+      dots = document.createElement("canvas");
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      dots.width = canvas.width; dots.height = canvas.height;
+      var d = dots.getContext("2d");
+      d.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var cw = W / WORLD.cols, ch = H / WORLD.rows;
+      var r = Math.max(0.6, Math.min(cw, ch) * 0.26);
+      d.fillStyle = C.dot;
+      for (var row = 0; row < WORLD.rows; row++) {
+        for (var col = 0; col < WORLD.cols; col++) {
+          if (!isLand(col, row)) continue;
+          d.beginPath();
+          d.arc((col + 0.5) * cw, (row + 0.5) * ch, r, 0, Math.PI * 2);
+          d.fill();
+        }
+      }
+    }
+
+    function resize() {
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      if (!W || !H) return;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawDots();
+      draw(performance.now());
+    }
+
+    var revealAt = reduce ? -1e9 : null; // set when the map scrolls into view
+    var DRAW_MS = 1300, STAGGER = 350, PULSE_MS = 2600;
+
+    function draw(now) {
+      if (!dots) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(dots, 0, 0, W, H);
+      var a = project(home.lat, home.lon);
+      var lift = W < 500 ? 0.22 : 0.3;
+      var lw = W < 500 ? 1.2 : 1.8;
+
+      clients.forEach(function (p, i) {
+        var c = project(p.lat, p.lon);
+        var elapsed = revealAt === null ? 0 : now - revealAt - i * STAGGER;
+        var prog = Math.max(0, Math.min(1, elapsed / DRAW_MS));
+        prog = 1 - Math.pow(1 - prog, 3);
+        var dim = active >= 0 && active !== i + 1;
+        if (prog > 0) {
+          ctx.beginPath();
+          var steps = 48;
+          for (var s = 0; s <= steps * prog; s++) {
+            var pt = arcPoint(a, c, s / steps, lift);
+            if (s === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.strokeStyle = C.amber;
+          ctx.globalAlpha = dim ? 0.2 : (active === i + 1 ? 1 : 0.75);
+          ctx.lineWidth = active === i + 1 ? lw + 0.8 : lw;
+          ctx.lineCap = "round";
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+        // A pulse runs along each finished line.
+        if (prog >= 1 && !reduce && !dim) {
+          var t = ((now - revealAt - i * 700) % PULSE_MS) / PULSE_MS;
+          var q = arcPoint(a, c, t, lift);
+          ctx.beginPath();
+          ctx.arc(q.x, q.y, lw + 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = C.amber;
+          ctx.globalAlpha = Math.sin(t * Math.PI);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        // Client marker appears when its line arrives.
+        if (prog >= 1) {
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, lw + 2.2, 0, Math.PI * 2);
+          ctx.fillStyle = C.bg;
+          ctx.fill();
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = dim ? C.dot : C.ice;
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, lw * 0.9, 0, Math.PI * 2);
+          ctx.fillStyle = dim ? C.dot : C.ice;
+          ctx.fill();
+          p.el.classList.add("is-shown");
+        }
+      });
+
+      // Home marker with a slow ring.
+      var ring = reduce ? 0 : ((now % 2400) / 2400);
+      if (ring) {
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, 4 + ring * (W < 500 ? 8 : 14), 0, Math.PI * 2);
+        ctx.strokeStyle = C.amber;
+        ctx.globalAlpha = 1 - ring;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, lw + 3, 0, Math.PI * 2);
+      ctx.fillStyle = C.amber;
+      ctx.fill();
+    }
+
+    var visible = false, running = false;
+    function frame(now) {
+      if (!visible || doc.hidden) { running = false; return; }
+      draw(now);
+      requestAnimationFrame(frame);
+    }
+    function start() {
+      if (reduce || running || !visible || doc.hidden) return;
+      running = true;
+      requestAnimationFrame(frame);
+    }
+
+    home.el.classList.add("is-shown");
+    if (reduce || !hasIO) {
+      revealAt = -1e9;
+      clients.forEach(function (p) { p.el.classList.add("is-shown"); });
+    }
+    if (hasIO) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible && revealAt === null && entries[0].intersectionRatio > 0.3) revealAt = performance.now();
+        if (visible && revealAt === null) revealAt = performance.now() + 250;
+        start();
+        if (reduce) draw(performance.now());
+      }, { threshold: [0, 0.3] }).observe(fig);
+    }
+    doc.addEventListener("visibilitychange", start);
+
+    // Hovering or focusing a region highlights its line.
+    function setActive(i) { active = i; if (reduce || !running) draw(performance.now()); }
+    $$(".region").forEach(function (li) {
+      var i = +li.getAttribute("data-region");
+      li.addEventListener("pointerenter", function () { setActive(i); });
+      li.addEventListener("pointerleave", function () { setActive(-1); });
+    });
+
+    var pending = false;
+    window.addEventListener("resize", function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; resize(); });
+    });
+    resize();
   })();
 
   /* ---------- Section headings stretch open as they scroll in ---------- */

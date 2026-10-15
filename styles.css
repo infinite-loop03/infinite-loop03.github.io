@@ -785,6 +785,80 @@ a:hover { color: var(--text); }
 }
 .svc p { max-width: 30rem; }
 
+/* ---------- Regions map ---------- */
+.map {
+  position: relative;
+  display: none;
+  max-width: 100%;
+  margin: 0;
+  aspect-ratio: 180 / 69;
+}
+.js .map { display: block; }
+.map-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.map-pin {
+  position: absolute;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 0.75rem;
+  font-variation-settings: "wght" 500, "wdth" 100;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  --tx: -50%;
+  --ty: -50%;
+  transform: translate(var(--tx), var(--ty));
+}
+.map-pin.is-shown { opacity: 1; }
+.map-pin.is-home { color: var(--amber); }
+.map-pin[data-pos="n"]  { --ty: calc(-100% - 12px); }
+.map-pin[data-pos="s"]  { --ty: 12px; }
+.map-pin[data-pos="e"]  { --tx: 12px; }
+.map-pin[data-pos="w"]  { --tx: calc(-100% - 12px); }
+.map-pin[data-pos="nw"] { --tx: calc(-100% - 8px); --ty: calc(-100% - 6px); }
+.map-pin[data-pos="ne"] { --tx: 8px; --ty: calc(-100% - 6px); }
+.map-pin[data-pos="sw"] { --tx: calc(-100% - 8px); --ty: 6px; }
+.map-pin[data-pos="se"] { --tx: 8px; --ty: 6px; }
+
+.regions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.region {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 1.1rem 1rem 1.1rem 0;
+  transition: color 0.2s;
+}
+.region-name {
+  color: var(--text);
+  font-family: var(--display);
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  font-variation-settings: "wght" 600, "wdth" 100;
+  letter-spacing: -0.02em;
+}
+.region.is-home .region-name { color: var(--amber); }
+.region-meta {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+.region-meta strong {
+  color: var(--text);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Writing and videos ---------- */
 .tabs {
   position: relative;
@@ -1305,6 +1379,7 @@ a:hover { color: var(--text); }
   .reel:hover .reel-thumb { transform: translateY(-8px) rotate(-1.2deg); }
   .reel:nth-child(even):hover .reel-thumb { transform: translateY(-8px) rotate(1.2deg); }
   .chips li:hover { border-color: var(--amber); color: var(--amber); }
+  .region:hover .region-name { color: var(--amber); }
   .reel:hover .play {
     border-color: var(--amber);
     background: var(--amber);
@@ -1375,6 +1450,8 @@ a:hover { color: var(--text); }
 }
 
 @media (max-width: 36rem) {
+  .map-pin { display: none; }
+  .regions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wa-float { width: 52px; padding: 0; justify-content: center; }
   .wa-label {
     position: absolute;
