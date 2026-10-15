@@ -423,15 +423,20 @@
       <div class="wrap">
         <div class="section-head">
           <h2 class="stretch" id="media-title">Writing and videos</h2>
-          <p class="section-note">Coming soon.</p>
+          <p class="section-note">Notes on engineering and AI on Medium. Videos are on the way.</p>
         </div>
 
-        <ul class="soon">
-          <li class="soon-item">
-            <span class="soon-platform">Medium</span>
-            <span class="soon-kind">Articles</span>
-            <span class="soon-status"><span class="soon-dot" aria-hidden="true"></span>Coming soon</span>
-          </li>
+        <!-- Medium posts, newest first. Copy an <li> to add one. -->
+        <ol class="post-list">
+          <li><a href="https://medium.com/@loop.infinite.03/anthropic-just-moved-off-git-heres-why-that-matters-beyond-anthropic-e8767575a42b" target="_blank" rel="noopener">
+            <span class="post-title">Anthropic just moved off Git. Here's why that matters beyond Anthropic</span>
+            <span class="post-meta">Oct 2026, 6 min read</span>
+            <span class="post-summary">Why Anthropic replaced Git for its main monorepo, and what teams adopting coding agents should plan for in CI, code review and checkouts.</span>
+          </a></li>
+        </ol>
+        <a class="more" href="https://medium.com/@loop.infinite.03" target="_blank" rel="noopener">All posts on Medium</a>
+
+        <ul class="soon soon--videos">
           <li class="soon-item">
             <span class="soon-platform">YouTube</span>
             <span class="soon-kind">Shorts</span>
@@ -444,8 +449,8 @@
           </li>
         </ul>
 
-        <!-- When you have posts and videos: replace the list above with the contents of this template
-             (tabs for Writing, Shorts and Reels), fill in the links, and change the section note. -->
+        <!-- When you have Shorts and Reels: replace the section's contents with this template
+             (tabs for Writing, Shorts and Reels), move the Medium posts into the Writing tab, and fill in the links. -->
         <template id="media-tabs">
         <div class="tabs" role="tablist" aria-label="Writing and videos">
           <button class="tab" type="button" role="tab" id="tab-writing" aria-controls="panel-writing" aria-selected="true">Writing <span class="tab-count">3</span></button>
@@ -615,7 +620,7 @@
           <li><a href="https://github.com/infinite-loop03" target="_blank" rel="noopener">GitHub<span>infinite-loop03</span></a></li>
           <li><a href="https://www.linkedin.com/in/a03/" target="_blank" rel="noopener">LinkedIn<span>in/a03</span></a></li>
           <li><a href="https://leetcode.com/u/loop-infinite03/" target="_blank" rel="noopener">LeetCode<span>loop-infinite03</span></a></li>
-          <li><span class="social-soon">Medium<span>Coming soon</span></span></li>
+          <li><a href="https://medium.com/@loop.infinite.03" target="_blank" rel="noopener">Medium<span>@loop.infinite.03</span></a></li>
           <li><span class="social-soon">YouTube<span>Coming soon</span></span></li>
           <li><span class="social-soon">Instagram<span>Coming soon</span></span></li>
         </ul>
