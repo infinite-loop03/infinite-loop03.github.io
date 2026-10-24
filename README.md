@@ -24,7 +24,7 @@ python3 -m http.server 8000
 - **Header:** your name types itself out on the first load of a visit, then the caret blinks and disappears.
 - **Name:** letters get heavier and wider near the cursor (Martian Mono's weight and width axes). On phones, a slow wave runs through them instead.
 - **Role line:** the phrase in `data-words` cycles every few seconds with a scramble. Edit the phrases there, separated by `|`.
-- **Oscilloscope band:** two live traces under the hero; the amber one reacts to the cursor. It shows your local time.
+- **Oscilloscope band:** a beam traces an infinity loop under the hero, leaving an amber trail; it speeds up and drifts toward the cursor. It shows your local time.
 - **Project cards:** stick and stack as you scroll on wider screens, with a soft spotlight that follows the cursor.
 - **Section headings:** stretch from narrow to wide as they scroll into view.
 - **Across time zones:** a dot map of the world. Countries you've worked with are green, places you're open to are faint green, and India is amber. Lines draw from India to each worked-with country when the map scrolls into view, with live local times underneath; hovering a country in the list highlights its line. Label positions are the `.map-pin` elements in `index.html`; the country colours are baked into the `WORLD` grid in `script.js`, so ask Claude to regenerate it if the list of countries changes.
