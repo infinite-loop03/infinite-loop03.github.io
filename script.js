@@ -268,8 +268,9 @@
     var w = 0, h = 0;
     var px = -1e4, amp = 0, target = 0;
     var t0 = performance.now(), visible = true, running = false;
-    var last = 0, loops = [];
-    var TAU = Math.PI * 2;
+    var last = 0, travel = 0, beam = 0;
+    var main = 0, floor = 0, track = { pos: [], neg: [] };
+    var TAU = Math.PI * 2, DS = 0.01;
 
     function resize() {
       var dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -282,26 +283,40 @@
     }
 
     // The beam runs in XY mode: a lemniscate of Bernoulli, the infinity sign.
-    // One large loop sits in the middle; smaller ones fill out to each edge.
+    // Loops ride a track from left to right, swelling as they pass the middle.
+    // A loop's size depends on where it is, and the track spaces them by size,
+    // so they never overlap and move fastest through the middle.
+    function sizeAt(x) {
+      var d = (x - w / 2) / (w / 2);
+      return floor + (main - floor) * Math.exp(-d * d / 0.18);
+    }
     function layout() {
-      // Smaller loops repeat until they run off both edges.
-      var main = Math.min(h * 0.92, w * (w < 640 ? 0.15 : 0.2)), floor = main * 0.32;
-      var old = loops;
-      loops = [{ x: w / 2, a: main, rank: 0 }];
-      [-1, 1].forEach(function (dir) {
-        var edge = w / 2 + dir * main, a = main, rank = 0;
-        while (dir < 0 ? edge > 0 : edge < w) {
-          a = Math.max(floor, a * 0.64); rank++;
-          var x = edge + dir * (a * 0.35 + a);
-          loops.push({ x: x, a: a, rank: rank });
-          edge = x + dir * a;
+      main = Math.min(h * 0.92, w * (w < 640 ? 0.15 : 0.2));
+      floor = main * 0.32;
+      [1, -1].forEach(function (dir) {
+        var list = [w / 2], x = w / 2;
+        while (x > -main && x < w + main) {
+          x += dir * DS * 2.7 * sizeAt(x);
+          list.push(x);
         }
+        track[dir > 0 ? "pos" : "neg"] = list;
       });
-      loops.forEach(function (l, i) {
-        l.alpha = Math.max(0.28, Math.pow(0.72, l.rank));
-        l.phase = old[i] ? old[i].phase : -l.rank * 0.9;
-        l.boost = 0;
-      });
+    }
+    // Slot coordinate s (one loop per whole number) to x.
+    function xAt(s) {
+      var list = s >= 0 ? track.pos : track.neg, f = Math.abs(s) / DS, i = Math.floor(f);
+      if (i + 1 >= list.length) return null;
+      return list[i] + (list[i + 1] - list[i]) * (f - i);
+    }
+    function visibleLoops(offset) {
+      var out = [], frac = offset - Math.floor(offset), base = Math.floor(offset);
+      for (var i = -40; i <= 40; i++) {
+        var x = xAt(i + frac);
+        if (x === null) continue;
+        var a = sizeAt(x), near = (a - floor) / (main - floor);
+        out.push({ x: x, a: a, near: near, id: i - base });
+      }
+      return out;
     }
     function point(u, l) {
       var s = Math.sin(u), c = Math.cos(u), d = 1 + s * s;
@@ -319,11 +334,12 @@
       ctx.stroke();
       ctx.globalAlpha = 1;
     }
+    function fade(l) { return 0.28 + 0.72 * l.near; }
     function drawStatic() {
       ctx.clearRect(0, 0, w, h);
-      loops.forEach(function (l) {
-        outline(l, ice, 1, 0.35 * l.alpha);
-        outline(l, amber, l.rank ? 1.25 : 1.75, l.alpha);
+      visibleLoops(0).forEach(function (l) {
+        outline(l, ice, 1, 0.35 * fade(l));
+        outline(l, amber, 1 + 0.75 * l.near, fade(l));
       });
     }
 
@@ -332,8 +348,11 @@
       var dt = last ? Math.min(now - last, 50) : 16;
       last = now;
       amp += (target - amp) * 0.06;
+      travel += dt / 3600;
+      beam += dt * 0.0013;
 
       ctx.clearRect(0, 0, w, h);
+      var loops = visibleLoops(travel);
       // Intro: the outlines sweep in from the left, then stay as faint reference traces.
       var p = clamp((now - t0) / 1700, 0, 1);
       var reveal = 1 - Math.pow(1 - p, 3);
@@ -341,23 +360,22 @@
       ctx.beginPath();
       ctx.rect(0, 0, w * reveal, h);
       ctx.clip();
-      loops.forEach(function (l) { outline(l, ice, 1, 0.5 * l.alpha); });
+      loops.forEach(function (l) { outline(l, ice, 1, 0.5 * fade(l)); });
       ctx.restore();
 
       ctx.lineCap = "round";
       ctx.strokeStyle = amber;
       loops.forEach(function (l) {
-        // Loops near the pointer light up and speed up.
-        var near = Math.exp(-((px - l.x) * (px - l.x)) / (2 * Math.pow(l.a + 60, 2)));
-        l.boost += (near * amp - l.boost) * 0.08;
-        l.phase += dt * 0.0013 * (1 + l.boost * 1.8) * (1 + l.rank * 0.12);
-        var bright = Math.min(1, l.alpha + l.boost * 0.6);
-        var scale = l.rank ? 0.75 : 1;
+        // Loops near the pointer light up and their beams run faster.
+        var boost = amp * Math.exp(-((px - l.x) * (px - l.x)) / (2 * Math.pow(l.a + 60, 2)));
+        var head = beam * (1 + boost * 0.8) + l.id * 0.9;
+        var bright = Math.min(1, fade(l) + boost * 0.6);
+        var scale = 0.75 + 0.25 * l.near;
 
         // Phosphor trail: older segments fade and thin out behind the beam.
-        var trail = TAU * 0.85, steps = l.rank ? 70 : 120, prev = point(l.phase - trail, l);
+        var trail = TAU * 0.85, steps = Math.round(70 + 50 * l.near), prev = point(head - trail, l);
         for (var i = 1; i <= steps; i++) {
-          var k = i / steps, q = point(l.phase - trail + trail * k, l);
+          var k = i / steps, q = point(head - trail + trail * k, l);
           ctx.globalAlpha = (0.08 + 0.92 * Math.pow(k, 1.5)) * bright;
           ctx.lineWidth = (0.6 + k * 1.6) * scale;
           ctx.beginPath();
