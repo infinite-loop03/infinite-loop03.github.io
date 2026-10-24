@@ -669,7 +669,7 @@
 
   /* ---------- Pointer effects: card spotlight, magnetic buttons, photo tilt ---------- */
   if (finePointer) {
-    $$(".card").forEach(function (el) {
+    $$(".card, .channel-link").forEach(function (el) {
       el.addEventListener("pointermove", function (e) {
         var r = el.getBoundingClientRect();
         el.style.setProperty("--mx", (e.clientX - r.left) + "px");
