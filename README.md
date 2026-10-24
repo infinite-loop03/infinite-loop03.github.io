@@ -44,7 +44,7 @@ and `REPLACE` to find them all.
 Your profile already fills the hero, projects, services, experience, About and toolbox.
 Still to fill in:
 
-- [ ] When ready: Shorts and Reels (swap in the `media-tabs` template), plus YouTube and Instagram links in Contact
+- [ ] When ready: Shorts and Reels (swap in the `media-tabs` template), plus a YouTube link in Contact
 
 ### Adding images
 
