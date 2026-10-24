@@ -268,7 +268,7 @@
     var w = 0, h = 0;
     var px = -1e4, amp = 0, target = 0;
     var t0 = performance.now(), visible = true, running = false;
-    var phase = 0, last = 0, cx = 0;
+    var last = 0, loops = [];
     var TAU = Math.PI * 2;
 
     function resize() {
@@ -277,20 +277,40 @@
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cx = w / 2;
+      layout();
       if (reduce) drawStatic();
     }
 
     // The beam runs in XY mode: a lemniscate of Bernoulli, the infinity sign.
-    function size() { return Math.min(h * 0.92, w * 0.28); }
-    function point(u, x0) {
-      var a = size(), s = Math.sin(u), c = Math.cos(u), d = 1 + s * s;
-      return [x0 + a * c / d, h * 0.5 + a * s * c / d];
+    // One large loop sits in the middle; smaller ones fill out to each edge.
+    function layout() {
+      // Smaller loops repeat until they run off both edges.
+      var main = Math.min(h * 0.92, w * (w < 640 ? 0.15 : 0.2)), floor = main * 0.32;
+      var old = loops;
+      loops = [{ x: w / 2, a: main, rank: 0 }];
+      [-1, 1].forEach(function (dir) {
+        var edge = w / 2 + dir * main, a = main, rank = 0;
+        while (dir < 0 ? edge > 0 : edge < w) {
+          a = Math.max(floor, a * 0.64); rank++;
+          var x = edge + dir * (a * 0.35 + a);
+          loops.push({ x: x, a: a, rank: rank });
+          edge = x + dir * a;
+        }
+      });
+      loops.forEach(function (l, i) {
+        l.alpha = Math.max(0.28, Math.pow(0.72, l.rank));
+        l.phase = old[i] ? old[i].phase : -l.rank * 0.9;
+        l.boost = 0;
+      });
     }
-    function loop(x0, color, width, alpha) {
+    function point(u, l) {
+      var s = Math.sin(u), c = Math.cos(u), d = 1 + s * s;
+      return [l.x + l.a * c / d, h * 0.5 + l.a * s * c / d];
+    }
+    function outline(l, color, width, alpha) {
       ctx.beginPath();
       for (var i = 0; i <= 160; i++) {
-        var q = point(i / 160 * TAU, x0);
+        var q = point(i / 160 * TAU, l);
         if (i === 0) ctx.moveTo(q[0], q[1]); else ctx.lineTo(q[0], q[1]);
       }
       ctx.globalAlpha = alpha;
@@ -301,8 +321,10 @@
     }
     function drawStatic() {
       ctx.clearRect(0, 0, w, h);
-      loop(w / 2, ice, 1, 0.35);
-      loop(w / 2, amber, 1.75, 1);
+      loops.forEach(function (l) {
+        outline(l, ice, 1, 0.35 * l.alpha);
+        outline(l, amber, l.rank ? 1.25 : 1.75, l.alpha);
+      });
     }
 
     function frame(now) {
@@ -310,45 +332,51 @@
       var dt = last ? Math.min(now - last, 50) : 16;
       last = now;
       amp += (target - amp) * 0.06;
-      phase += dt * 0.0013 * (1 + amp * 1.6);
-      // Drift toward the pointer while it is over the hero.
-      var aim = amp > 0.01 ? clamp(px, w * 0.35, w * 0.65) : w / 2;
-      cx += (aim - cx) * 0.04;
 
       ctx.clearRect(0, 0, w, h);
-      // Intro: the outline sweeps in, then stays as a faint reference trace.
+      // Intro: the outlines sweep in from the left, then stay as faint reference traces.
       var p = clamp((now - t0) / 1700, 0, 1);
       var reveal = 1 - Math.pow(1 - p, 3);
       ctx.save();
       ctx.beginPath();
       ctx.rect(0, 0, w * reveal, h);
       ctx.clip();
-      loop(cx, ice, 1, 0.5);
+      loops.forEach(function (l) { outline(l, ice, 1, 0.5 * l.alpha); });
       ctx.restore();
 
-      // Phosphor trail: older segments fade and thin out behind the beam.
-      var trail = TAU * 0.85, steps = 120, prev = point(phase - trail, cx);
       ctx.lineCap = "round";
       ctx.strokeStyle = amber;
-      for (var i = 1; i <= steps; i++) {
-        var k = i / steps, q = point(phase - trail + trail * k, cx);
-        ctx.globalAlpha = 0.08 + 0.92 * Math.pow(k, 1.5);
-        ctx.lineWidth = 0.6 + k * 1.6;
-        ctx.beginPath();
-        ctx.moveTo(prev[0], prev[1]);
-        ctx.lineTo(q[0], q[1]);
-        ctx.stroke();
-        prev = q;
-      }
-      ctx.globalAlpha = 1;
+      loops.forEach(function (l) {
+        // Loops near the pointer light up and speed up.
+        var near = Math.exp(-((px - l.x) * (px - l.x)) / (2 * Math.pow(l.a + 60, 2)));
+        l.boost += (near * amp - l.boost) * 0.08;
+        l.phase += dt * 0.0013 * (1 + l.boost * 1.8) * (1 + l.rank * 0.12);
+        var bright = Math.min(1, l.alpha + l.boost * 0.6);
+        var scale = l.rank ? 0.75 : 1;
 
-      ctx.beginPath();
-      ctx.arc(prev[0], prev[1], 3.5, 0, TAU);
-      ctx.fillStyle = amber;
-      ctx.shadowColor = amber;
-      ctx.shadowBlur = 14;
-      ctx.fill();
-      ctx.shadowBlur = 0;
+        // Phosphor trail: older segments fade and thin out behind the beam.
+        var trail = TAU * 0.85, steps = l.rank ? 70 : 120, prev = point(l.phase - trail, l);
+        for (var i = 1; i <= steps; i++) {
+          var k = i / steps, q = point(l.phase - trail + trail * k, l);
+          ctx.globalAlpha = (0.08 + 0.92 * Math.pow(k, 1.5)) * bright;
+          ctx.lineWidth = (0.6 + k * 1.6) * scale;
+          ctx.beginPath();
+          ctx.moveTo(prev[0], prev[1]);
+          ctx.lineTo(q[0], q[1]);
+          ctx.stroke();
+          prev = q;
+        }
+
+        ctx.globalAlpha = bright;
+        ctx.beginPath();
+        ctx.arc(prev[0], prev[1], 3.5 * scale, 0, TAU);
+        ctx.fillStyle = amber;
+        ctx.shadowColor = amber;
+        ctx.shadowBlur = 14 * scale;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      ctx.globalAlpha = 1;
       requestAnimationFrame(frame);
     }
 
