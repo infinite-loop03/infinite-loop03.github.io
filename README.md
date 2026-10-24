@@ -7,7 +7,7 @@ Personal site: plain HTML and CSS, no build step.
 | `index.html` | The whole page. All content lives here. |
 | `styles.css` | Colours, type and layout. The palette is at the top. |
 | `script.js` | All the motion and interaction (listed below). The page still reads fine without it. |
-| `favicon.svg` | Browser-tab icon. |
+| `favicon.png` | Browser-tab icon (`assets/apple-touch-icon.png` for home screens). |
 | `assets/` | Put your photo, screenshots and thumbnails here. |
 
 ## Preview it

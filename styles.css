@@ -136,6 +136,13 @@ a:hover { color: var(--text); }
   text-decoration: none;
   white-space: pre;
 }
+.logo-mark {
+  width: auto;
+  height: 1.375rem;
+  margin-right: 10px;
+  transition: transform 0.4s var(--ease);
+}
+.logo:hover .logo-mark { transform: rotate(-8deg) scale(1.08); }
 .caret {
   display: none;
   width: 2px;
@@ -1329,6 +1336,15 @@ a:hover { color: var(--text); }
   gap: clamp(2rem, 6vw, 5rem);
 }
 .about:not(:has(.about-photo)) { grid-template-columns: minmax(0, 1fr); }
+.about-photo.about-avatar {
+  aspect-ratio: 1;
+  max-width: 26rem;
+  justify-self: center;
+  border-radius: 50%;
+  object-fit: contain;
+  background: radial-gradient(circle at 50% 40%, rgba(245, 179, 66, 0.22), var(--bg-2) 68%);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
 .about-photo {
   width: 100%;
   height: auto;
@@ -1495,6 +1511,9 @@ a:hover { color: var(--text); }
   color: var(--muted);
   font-size: 0.875rem;
 }
+.footer-inner { align-items: center; }
+.footer-brand { display: inline-flex; align-items: center; gap: 20px; }
+.footer-wordmark { width: auto; height: 56px; opacity: 0.9; }
 
 /* ---------- Hover effects (mouse and trackpad only) ---------- */
 @media (hover: hover) and (pointer: fine) {
