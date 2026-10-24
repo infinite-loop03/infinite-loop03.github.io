@@ -1133,6 +1133,15 @@ a:hover { color: var(--text); }
   animation: blink 1.4s steps(1) infinite;
 }
 
+/* A card whose profile is live: the whole card links through the platform name */
+.soon-item--live { border-style: solid; transition: border-color 0.2s var(--ease); }
+.soon-item--live:hover, .soon-item--live:focus-within { border-color: var(--amber); }
+.soon-item--live .soon-platform { text-decoration: none; }
+.soon-item--live .soon-platform::before { content: ""; position: absolute; inset: 0; z-index: 1; }
+.soon-item--live .soon-platform:focus-visible { outline: none; }
+.soon-item--live .soon-status span { transition: transform 0.2s var(--ease); }
+.soon-item--live:hover .soon-status span { transform: translateX(4px); }
+
 /* ---------- Testimonials ---------- */
 .quotes { display: grid; gap: 3rem; }
 .js .quotes { gap: 0; }
