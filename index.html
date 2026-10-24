@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Infinite Loop</title>
+  <meta name="description" content="Infinite Loop, senior backend engineer. Nearly 10 years building event-driven and API-based systems for financial services and e-commerce.">
+  <meta name="theme-color" content="#0e1015">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Link previews (LinkedIn, WhatsApp, X). The image URL must be absolute: switch these to the custom domain once it is connected. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Infinite Loop, senior backend engineer">
+  <meta property="og:description" content="Nearly 10 years building event-driven and API-based systems for financial services and e-commerce.">
+  <meta property="og:url" content="https://infinite-loop03.github.io/">
+  <meta property="og:image" content="https://infinite-loop03.github.io/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Infinite Loop, senior backend engineer">
+  <meta name="twitter:image" content="https://infinite-loop03.github.io/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#top"><span class="logo-text">Infinite Loop</span><span class="caret" aria-hidden="true"></span></a>
+      <nav aria-label="Main">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#media">Writing</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <span class="header-clock" title="My local time in India"><span data-clock>--:--</span> IST</span>
+    </div>
+    <div class="progress" aria-hidden="true"><span></span></div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="top">
+      <div class="wrap">
+        <p class="hero-status"><span class="pulse" aria-hidden="true"></span>Open to new projects</p>
+
+        <h1 class="name" data-kinetic="name">Infinite Loop</h1>
+
+        <!-- The phrases in data-words (separated by |) cycle in the hero. Keep the first one in the text too. -->
+        <p class="role">Senior backend engineer. I build <span class="cycle" data-words="event-driven systems|APIs and microservices|AI agent automations">event-driven systems</span> for <span class="who">financial services and e-commerce teams</span>.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary magnetic" href="https://calendly.com/loop-infinite-03/30min" target="_blank" rel="noopener">Book a call</a>
+          <a class="btn magnetic" href="#work">See my work</a>
+        </div>
+      </div>
+
+      <div class="scope" aria-hidden="true">
+        <canvas></canvas>
+        <div class="wrap scope-readout scope-readout--top">
+          <span>Local time <strong data-clock-s>--:--:--</strong> IST</span>
+        </div>
+        <div class="wrap scope-readout">
+          <span></span>
+          <span>Worked with teams in the UK, Europe, the US, Brazil, Japan and India</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SELECTED WORK ================= -->
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="work-title">Selected work</h2>
+        </div>
+
+        <div class="stack">
+          <!-- Project 1 -->
+          <article class="card" style="--i:0">
+            <div class="card-text">
+              <span class="card-index">01 / 04</span>
+              <h3>Ticketing platform at scale</h3>
+              <p class="card-context">Senior Backend Engineer, 2026</p>
+              <p>A generic Kafka pipeline that creates tickets for any service and request type, so new ones onboard without code changes. It feeds a ticket search service handling about 160 million queries a month. Alongside it, I built Devin agent automations over MCP to triage production alerts, made GraphQL schema deployments safe with Argo Rollouts canaries, and upgraded the platform to Jira 11 with zero regressions.</p>
+              <ul class="tags" aria-label="Tech stack">
+                <li>Java</li>
+                <li>Kafka</li>
+                <li>GraphQL</li>
+                <li>SQL Server</li>
+                <li>Argo Rollouts</li>
+                <li>Devin + MCP</li>
+              </ul>
+            </div>
+            <div class="readout">
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="160" data-prefix="~" data-suffix="M">~160M</span>
+                <span class="metric-label">ticket search queries a month</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="20" data-prefix="~" data-suffix="h">~20h</span>
+                <span class="metric-label">on-call time saved by agents triaging 200 alerts</span>
+              </div>
+              <div class="delta" data-animate style="--before:.69; --after:.47">
+                <div class="delta-head">
+                  <span class="metric-label">SQL Server median daily peak CPU</span>
+                  <span class="delta-val">69% → 47%</span>
+                </div>
+                <div class="delta-bar"><span class="delta-before"></span><span class="delta-after"></span></div>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="3.4" data-suffix=" hrs">3.4 hrs</span>
+                <span class="metric-label">to refresh 3.74M issues in staging, zero production impact</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="80" data-suffix="%">80%</span>
+                <span class="metric-label">fewer SonarQube issues</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="card" style="--i:1">
+            <div class="card-text">
+              <span class="card-index">02 / 04</span>
+              <h3>Self-serve rules platform</h3>
+              <p class="card-context">Senior Full Stack Engineer, 2025–26</p>
+              <p>Led backend development of more than ten features and moved legacy rules onto a maintainable architecture, with schema and API decisions that kept every consumer working. A React and Next.js interface lets the business manage rules themselves, and AI code review in the CI pipeline sped up every pull request.</p>
+              <ul class="tags" aria-label="Tech stack">
+                <li>API design</li>
+                <li>Database schema</li>
+                <li>React</li>
+                <li>Next.js</li>
+                <li>AI code review</li>
+              </ul>
+            </div>
+            <div class="readout">
+              <div class="delta" data-animate style="--before:1; --after:.004">
+                <div class="delta-head">
+                  <span class="metric-label">Time to set up a new rule</span>
+                  <span class="delta-val">20 days → 2 hours</span>
+                </div>
+                <div class="delta-bar"><span class="delta-before"></span><span class="delta-after"></span></div>
+              </div>
+              <div class="delta" data-animate style="--before:1; --after:.167">
+                <div class="delta-head">
+                  <span class="metric-label">Pull request review turnaround</span>
+                  <span class="delta-val">6 hours → 1 hour</span>
+                </div>
+                <div class="delta-bar"><span class="delta-before"></span><span class="delta-after"></span></div>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="30" data-suffix="%">30%</span>
+                <span class="metric-label">fewer change requests to engineering</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="10" data-suffix="+">10+</span>
+                <span class="metric-label">features led on the backend</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="card" style="--i:2">
+            <div class="card-text">
+              <span class="card-index">03 / 04</span>
+              <h3>Card payments platform</h3>
+              <p class="card-context">Senior Backend Engineer, 2025</p>
+              <p>Delivered card-transaction features end to end for a payments client, across about fifteen acquirers and thousands of transactions a day. I owned each one from technical design through to production, provisioned the AWS infrastructure as code with Terraform, and built the CI/CD pipelines the services ship through.</p>
+              <ul class="tags" aria-label="Tech stack">
+                <li>AWS</li>
+                <li>Terraform</li>
+                <li>GitHub Actions</li>
+                <li>Card payments</li>
+              </ul>
+            </div>
+            <div class="readout">
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="10" data-suffix="+">10+</span>
+                <span class="metric-label">card-transaction features shipped end to end</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="15" data-prefix="~">~15</span>
+                <span class="metric-label">acquirers supported</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="20" data-prefix="~">~20</span>
+                <span class="metric-label">deployments a week</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="4" data-suffix="+">4+</span>
+                <span class="metric-label">services on GitHub Actions pipelines</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="card" style="--i:3">
+            <div class="card-text">
+              <span class="card-index">04 / 04</span>
+              <h3>Event-driven architecture rollout</h3>
+              <p class="card-context">Senior Consultant, Thoughtworks, 2021–25</p>
+              <p>Set up Kafka Schema Registry, REST Proxy and the HTTP Sink Connector from scratch to bring event-driven architecture to four services, all managed through Confluent Control Center. I designed and built the Spring Boot microservices around it and mentored the team until they owned their Kafka integrations themselves.</p>
+              <ul class="tags" aria-label="Tech stack">
+                <li>Kafka</li>
+                <li>Confluent</li>
+                <li>Java</li>
+                <li>Spring Boot</li>
+                <li>React</li>
+                <li>Kubernetes</li>
+              </ul>
+            </div>
+            <div class="readout">
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="10" data-prefix="~" data-suffix="K">~10K</span>
+                <span class="metric-label">events processed a day</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="4">4</span>
+                <span class="metric-label">services moved to event-driven</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="5" data-suffix="+">5+</span>
+                <span class="metric-label">Spring Boot microservices built</span>
+              </div>
+              <div class="metric" data-animate>
+                <span class="metric-value" data-count="8" data-suffix="+">8+</span>
+                <span class="metric-label">engineers mentored</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="services-title">Services</h2>
+          <p class="section-note">What teams bring me in for.</p>
+        </div>
+        <ul class="svc-list">
+          <li class="svc">
+            <h3>Backend and API development</h3>
+            <p>Java and Spring Boot or Python and FastAPI services with REST and GraphQL APIs, designed, tested and taken all the way to production.</p>
+          </li>
+          <li class="svc">
+            <h3>Event-driven architecture</h3>
+            <p>Bringing Kafka or Pub/Sub into existing systems, from schema registry and connectors to coaching your team until they run it themselves.</p>
+          </li>
+          <li class="svc">
+            <h3>AI for engineering teams</h3>
+            <p>Agent automations over MCP that triage production alerts, and AI code review in CI, measured in hours given back to the team.</p>
+          </li>
+          <li class="svc">
+            <h3>Migrations and upgrades</h3>
+            <p>Moving legacy rules, plugins and platforms onto maintainable code without breaking the services that depend on them.</p>
+          </li>
+          <li class="svc">
+            <h3>Technical leadership</h3>
+            <p>Shaping roadmaps, backlogs and user stories with product and business stakeholders, and managing delivery risk across single- and multi-team programmes.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= EXPERIENCE ================= -->
+    <section class="section" id="experience" aria-labelledby="experience-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="experience-title">Experience</h2>
+          <p class="section-note">Nearly 10 years building backend systems, most recent first. Each bar shows how long I spent there.</p>
+        </div>
+
+        <div class="trace" data-animate>
+          <div class="trace-axis" aria-hidden="true">
+            <span style="--x:0">Now</span>
+            <span style="--x:.182">2025</span>
+            <span style="--x:.380">2023</span>
+            <span style="--x:.579">2021</span>
+            <span style="--x:.777">2019</span>
+            <span style="--x:.975">2017</span>
+          </div>
+          <ol class="trace-rows">
+            <li class="span-row is-current" style="--start:.000; --end:.174; --row:0">
+              <div class="span-info">
+                <h3>Current consultancy</h3>
+                <p>Senior Consultant <span class="span-dates">Feb 2025 – present</span></p>
+              </div>
+              <div class="span-track"><span class="span-bar"></span></div>
+              <p class="span-note">Card-transaction features across ~15 acquirers and CI/CD for ~20 deployments a week at a payments client, then a ticketing platform and a rules platform for a second client.</p>
+            </li>
+            <li class="span-row" style="--start:.174; --end:.529; --row:1">
+              <div class="span-info">
+                <h3>Thoughtworks</h3>
+                <p>Senior Consultant <span class="span-dates">Jul 2021 – Feb 2025</span></p>
+              </div>
+              <div class="span-track"><span class="span-bar"></span></div>
+              <p class="span-note">Introduced event-driven architecture across four services, shaped the technical approach for 10+ major initiatives, and mentored 8+ engineers.</p>
+            </li>
+            <li class="span-row" style="--start:.537; --end:.727; --row:2">
+              <div class="span-info">
+                <h3>Principal Global Services</h3>
+                <p>Full Stack Developer <span class="span-dates">Jul 2019 – Jun 2021</span></p>
+              </div>
+              <div class="span-track"><span class="span-bar"></span></div>
+              <p class="span-note">Built a business-insurance quoting app that cut quote turnaround from about 7 days to 2 hours, plus Spring Boot REST services behind Apigee.</p>
+            </li>
+            <li class="span-row" style="--start:.736; --end:1.000; --row:3">
+              <div class="span-info">
+                <h3>Tata Consultancy Services</h3>
+                <p>Full Stack Engineer <span class="span-dates">Oct 2016 – Jun 2019</span></p>
+              </div>
+              <div class="span-track"><span class="span-bar"></span></div>
+              <p class="span-note">Built and enhanced about five web apps for a UK client in Node.js, Express and React, and ran AWS across four environments.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= REGIONS ================= -->
+    <section class="section" id="regions" aria-labelledby="regions-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="regions-title">Across time zones</h2>
+          <p class="section-note">Teams I've worked with, and where I'm open to working next. The clocks are live.</p>
+        </div>
+
+        <!-- Markers sit at data-lat / data-lon. data-pos places the label: n, s, e, w, nw, ne, sw, se (centred if left out).
+             Lines are drawn from the .is-home pin to every pin that isn't .is-open. The country colours come from the
+             WORLD grid in script.js. -->
+        <figure class="map" data-map>
+          <canvas class="map-canvas" aria-hidden="true"></canvas>
+          <span class="map-pin is-home" data-lat="22.8" data-lon="79.5" data-pos="s" aria-hidden="true">India</span>
+          <span class="map-pin" data-lat="52.8" data-lon="-1.8" data-pos="w" aria-hidden="true">UK</span>
+          <span class="map-pin" data-lat="52.3" data-lon="5.5" data-pos="n" aria-hidden="true">Netherlands</span>
+          <span class="map-pin" data-lat="51.1" data-lon="10.3" data-pos="se" aria-hidden="true">Germany</span>
+          <span class="map-pin" data-lat="39" data-lon="-98" data-pos="n" aria-hidden="true">US</span>
+          <span class="map-pin" data-lat="-10.7" data-lon="-53.2" data-pos="s" aria-hidden="true">Brazil</span>
+          <span class="map-pin" data-lat="37.5" data-lon="137.7" data-pos="e" aria-hidden="true">Japan</span>
+          <span class="map-pin is-open" data-lat="-25.8" data-lon="134.3" aria-hidden="true">Australia</span>
+          <span class="map-pin is-open" data-lat="-41.6" data-lon="173" data-pos="w" aria-hidden="true">New Zealand</span>
+          <span class="map-pin is-open" data-lat="23.9" data-lon="54.2" data-pos="w" aria-hidden="true">UAE</span>
+          <figcaption class="sr-only">World map. Lines run from India, where I'm based, to the UK, the Netherlands, Germany, the US, Brazil and Japan, where I've worked with teams. Australia, New Zealand, the UAE and most of Europe are marked as places I'm open to working with.</figcaption>
+        </figure>
+
+        <ul class="map-legend" aria-hidden="true">
+          <li><span class="swatch swatch--home"></span>Based in</li>
+          <li><span class="swatch swatch--worked"></span>Worked with</li>
+          <li><span class="swatch swatch--open"></span>Open to</li>
+        </ul>
+
+        <div class="regions-groups">
+          <div class="regions-group">
+            <h3 class="regions-title">Worked with</h3>
+            <ul class="regions">
+              <li class="region is-home" data-region="0">
+                <span class="region-name">India</span>
+                <span class="region-meta"><strong data-tz="Asia/Kolkata">--:--</strong> where I'm based</span>
+              </li>
+              <li class="region" data-region="1">
+                <span class="region-name">UK</span>
+                <span class="region-meta"><strong data-tz="Europe/London">--:--</strong> in London</span>
+              </li>
+              <li class="region" data-region="2">
+                <span class="region-name">Netherlands</span>
+                <span class="region-meta"><strong data-tz="Europe/Amsterdam">--:--</strong> in Amsterdam</span>
+              </li>
+              <li class="region" data-region="3">
+                <span class="region-name">Germany</span>
+                <span class="region-meta"><strong data-tz="Europe/Berlin">--:--</strong> in Berlin</span>
+              </li>
+              <li class="region" data-region="4">
+                <span class="region-name">US</span>
+                <span class="region-meta"><strong data-tz="America/New_York">--:--</strong> in New York</span>
+              </li>
+              <li class="region" data-region="5">
+                <span class="region-name">Brazil</span>
+                <span class="region-meta"><strong data-tz="America/Sao_Paulo">--:--</strong> in São Paulo</span>
+              </li>
+              <li class="region" data-region="6">
+                <span class="region-name">Japan</span>
+                <span class="region-meta"><strong data-tz="Asia/Tokyo">--:--</strong> in Tokyo</span>
+              </li>
+            </ul>
+          </div>
+          <div class="regions-group">
+            <h3 class="regions-title">Open to</h3>
+            <ul class="regions regions--open">
+              <li class="region">
+                <span class="region-name">Europe</span>
+                <span class="region-meta">The EU, plus Norway, Switzerland and Iceland</span>
+              </li>
+              <li class="region">
+                <span class="region-name">UAE</span>
+                <span class="region-meta"><strong data-tz="Asia/Dubai">--:--</strong> in Dubai</span>
+              </li>
+              <li class="region">
+                <span class="region-name">Australia</span>
+                <span class="region-meta"><strong data-tz="Australia/Sydney">--:--</strong> in Sydney</span>
+              </li>
+              <li class="region">
+                <span class="region-name">New Zealand</span>
+                <span class="region-meta"><strong data-tz="Pacific/Auckland">--:--</strong> in Auckland</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WRITING AND VIDEOS ================= -->
+    <section class="section" id="media" aria-labelledby="media-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="stretch" id="media-title">Writing and videos</h2>
+          <p class="section-note">Notes on engineering and AI on Medium. Videos are on the way.</p>
+        </div>
+
+        <!-- Medium posts, newest first. Copy an <li> to add one. -->
+        <ol class="post-list">
+          <li><a href="https://medium.com/@loop.infinite.03/anthropic-just-moved-off-git-heres-why-that-matters-beyond-anthropic-e8767575a42b" target="_blank" rel="noopener">
+            <span class="post-title">Anthropic just moved off Git. Here's why that matters beyond Anthropic</span>
+            <span class="post-meta">Oct 2026, 6 min read</span>
+            <span class="post-summary">Why Anthropic replaced Git for its main monorepo, and what teams adopting coding agents should plan for in CI, code review and checkouts.</span>
+          </a></li>
+        </ol>
+        <a class="more" href="https://medium.com/@loop.infinite.03" target="_blank" rel="noopener">All posts on Medium</a>
+
+        <ul class="soon soon--videos">
+          <li class="soon-item">
+            <span class="soon-platform">YouTube</span>
+            <span class="soon-kind">Shorts</span>
+            <span class="soon-status"><span class="soon-dot" aria-hidden="true"></span>Coming soon</span>
+          </li>
+          <li class="soon-item">
+            <span class="soon-platform">Instagram</span>
+            <span class="soon-kind">Reels</span>
+            <span class="soon-status"><span class="soon-dot" aria-hidden="true"></span>Coming soon</span>
+          </li>
+        </ul>
+
+        <!-- When you have Shorts and Reels: replace the section's contents with this template
+             (tabs for Writing, Shorts and Reels), move the Medium posts into the Writing tab, and fill in the links. -->
+        <template id="media-tabs">
+        <div class="tabs" role="tablist" aria-label="Writing and videos">
+          <button class="tab" type="button" role="tab" id="tab-writing" aria-controls="panel-writing" aria-selected="true">Writing <span class="tab-count">3</span></button>
+          <button class="tab" type="button" role="tab" id="tab-shorts" aria-controls="panel-shorts" aria-selected="false" tabindex="-1">Shorts <span class="tab-count">4</span></button>
+          <button class="tab" type="button" role="tab" id="tab-reels" aria-controls="panel-reels" aria-selected="false" tabindex="-1">Reels <span class="tab-count">4</span></button>
+          <span class="tab-ink" aria-hidden="true"></span>
+        </div>
+
+        <div class="panel" id="panel-writing" role="tabpanel" aria-labelledby="tab-writing">
+          <h3 class="panel-title">On Medium</h3>
+          <!-- REPLACE: your 3 best Medium posts. href = the post URL -->
+          <ol class="post-list">
+            <li><a href="#">
+              <span class="post-title">[Post title]</span>
+              <span class="post-meta">[Mon YYYY], [x] min read</span>
+              <span class="post-summary">[One line on what the reader learns.]</span>
+            </a></li>
+            <li><a href="#">
+              <span class="post-title">[Post title]</span>
+              <span class="post-meta">[Mon YYYY], [x] min read</span>
+              <span class="post-summary">[One line on what the reader learns.]</span>
+            </a></li>
+            <li><a href="#">
+              <span class="post-title">[Post title]</span>
+              <span class="post-meta">[Mon YYYY], [x] min read</span>
+              <span class="post-summary">[One line on what the reader learns.]</span>
+            </a></li>
+          </ol>
+          <!-- REPLACE: your Medium profile URL -->
+          <a class="more" href="#">All posts on Medium</a>
+        </div>
+
+        <div class="panel" id="panel-shorts" role="tabpanel" aria-labelledby="tab-shorts">
+          <h3 class="panel-title">YouTube Shorts</h3>
+          <!-- REPLACE: 4 Shorts. href = the Short's URL. Swap the play button for <img src="assets/short-1.jpg" alt=""> and remove "placeholder" from the class. -->
+          <div class="strip">
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Short title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Short title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Short title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Short title]</span><span class="reel-meta">[x] views</span></a>
+          </div>
+          <!-- REPLACE: your YouTube channel URL -->
+          <a class="more" href="#">Channel on YouTube</a>
+        </div>
+
+        <div class="panel" id="panel-reels" role="tabpanel" aria-labelledby="tab-reels">
+          <h3 class="panel-title">Instagram Reels</h3>
+          <!-- REPLACE: 4 Reels. href = the Reel's URL. Swap the play button for <img src="assets/reel-1.jpg" alt=""> and remove "placeholder" from the class. -->
+          <div class="strip">
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Reel title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Reel title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Reel title]</span><span class="reel-meta">[x] views</span></a>
+            <a class="reel" href="#"><span class="reel-thumb placeholder"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span></span><span class="reel-title">[Reel title]</span><span class="reel-meta">[x] views</span></a>
+          </div>
+          <!-- REPLACE: your Instagram profile URL -->
+          <a class="more" href="#">Profile on Instagram</a>
+        </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="about">
+          <!-- Photo removed. To add one back: <img class="about-photo tilt" src="assets/photo.jpg" alt="Infinite Loop" width="1000" height="1250" loading="lazy"> -->
+          <div class="about-body">
+            <h2 class="stretch" id="about-title">About</h2>
+            <p class="about-lead">I'm a senior backend engineer with nearly 10 years of building event-driven and API-based systems, from card payments and insurance to retail support and order integration.</p>
+            <p>I take work end to end: writing the technical design, taking epics from discovery to production, and leading backend development for new features and legacy migrations. I mentor engineers, work closely with stakeholders on requirements, and pair disciplined practice (TDD, pair programming, infrastructure as code) with hands-on AI engineering.</p>
+            <dl class="spec">
+              <dt>Currently</dt>
+              <dd>Senior Consultant at a technology consultancy</dd>
+              <dt>Education</dt>
+              <dd>Postgraduate Certificate in AI and ML, BITS Pilani (2026)<br>B.E. Computer Science, Medicaps Institute of Science and Technology (2016)</dd>
+              <dt>Certified</dt>
+              <dd>AWS Certified Developer Associate<br>AWS Certified Solutions Architect</dd>
+              <dt>Practice</dt>
+              <dd><a href="https://leetcode.com/u/loop-infinite03/" target="_blank" rel="noopener">295+ problems solved on LeetCode</a>, with the 100 Days Badge for 2026</dd>
+              <dt>Worked with</dt>
+              <dd>UK, Netherlands, Germany, US, Brazil, Japan and India</dd>
+              <dt>Works</dt>
+              <dd>Co-located, remote and hybrid, across time zones</dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="toolbox">
+          <h3 class="toolbox-title">Toolbox</h3>
+          <div class="tool-groups">
+            <div class="tool-group"><h4>Languages</h4><ul class="chips"><li>Java</li><li>Python</li><li>TypeScript</li></ul></div>
+            <div class="tool-group"><h4>Backend and APIs</h4><ul class="chips"><li>Spring Boot</li><li>FastAPI</li><li>Microservices</li><li>REST</li><li>GraphQL</li><li>Webhooks</li></ul></div>
+            <div class="tool-group"><h4>Event streaming</h4><ul class="chips"><li>Apache Kafka</li><li>Google Cloud Pub/Sub</li></ul></div>
+            <div class="tool-group"><h4>AI engineering</h4><ul class="chips"><li>Claude</li><li>Devin</li><li>MCP integrations</li><li>Agent workflow automation</li></ul></div>
+            <div class="tool-group"><h4>Cloud</h4><ul class="chips"><li>AWS (S3, EC2, EKS, RDS, CloudFront, Route 53)</li><li>GCP (GKE, Cloud SQL)</li></ul></div>
+            <div class="tool-group"><h4>Data and search</h4><ul class="chips"><li>PostgreSQL</li><li>SQL Server</li><li>DynamoDB</li><li>BigQuery</li><li>Elasticsearch</li></ul></div>
+            <div class="tool-group"><h4>DevOps and observability</h4><ul class="chips"><li>Kubernetes</li><li>Docker</li><li>Terraform</li><li>Datadog</li><li>Argo Rollouts</li></ul></div>
+            <div class="tool-group"><h4>Frontend</h4><ul class="chips"><li>React</li><li>Redux</li><li>Next.js</li></ul></div>
+            <div class="tool-group"><h4>Testing</h4><ul class="chips"><li>JUnit 5</li><li>Mockito</li><li>Karate</li><li>Pytest</li><li>React Testing Library</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 class="stretch" id="contact-title">Contact</h2>
+        <p class="contact-lede">Tell me what you're building and where it's stuck. A few lines is enough to start.</p>
+
+        <p class="email-big"><a class="email-link" href="mailto:loop.infinite.03@gmail.com"><span id="email" data-kinetic="email">loop.infinite.03@gmail.com</span></a></p>
+
+        <div class="contact-actions">
+          <button class="btn magnetic" type="button" id="copy-email">Copy email</button>
+          <a class="btn btn-primary magnetic" href="https://calendly.com/loop-infinite-03/30min" target="_blank" rel="noopener">Book a 30-minute call</a>
+          <a class="btn btn-wa magnetic" href="https://wa.me/919183500420?text=Hi%20Infinite%20Loop%2C%20I%20found%20you%20through%20your%20website." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9.5h8M8 12.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Message on WhatsApp</a>
+        </div>
+        <p class="contact-time">It's <strong data-clock>--:--</strong> in India right now. I reply within 12 hours.</p>
+
+        <!-- Profile links. Medium, YouTube and Instagram become links once those go live. -->
+        <ul class="socials" aria-label="Elsewhere">
+          <li><a href="https://github.com/infinite-loop03" target="_blank" rel="noopener">GitHub<span>infinite-loop03</span></a></li>
+          <li><a href="https://www.linkedin.com/in/loop-infinite03/" target="_blank" rel="noopener">LinkedIn<span>in/loop-infinite03</span></a></li>
+          <li><a href="https://leetcode.com/u/loop-infinite03/" target="_blank" rel="noopener">LeetCode<span>loop-infinite03</span></a></li>
+          <li><a href="https://medium.com/@loop.infinite.03" target="_blank" rel="noopener">Medium<span>@loop.infinite.03</span></a></li>
+          <li><span class="social-soon">YouTube<span>Coming soon</span></span></li>
+          <li><span class="social-soon">Instagram<span>Coming soon</span></span></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span>&copy; <span id="year">2026</span> Infinite Loop</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/919183500420?text=Hi%20Infinite%20Loop%2C%20I%20found%20you%20through%20your%20website." target="_blank" rel="noopener" aria-label="Message Infinite Loop on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9.5h8M8 12.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="wa-label">WhatsApp</span></a>
+</body>
+</html>
