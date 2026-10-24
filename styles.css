@@ -197,16 +197,15 @@ a:hover { color: var(--text); }
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  color: var(--muted);
+  color: var(--text);
   fill: currentColor;
-  transition: color 0.2s, background-color 0.2s, transform 0.2s var(--ease);
+  transition: background-color 0.2s, transform 0.2s var(--ease);
 }
 .header-social a:hover, .header-social a:focus-visible {
   background: var(--bg-3);
-  color: var(--brand);
   transform: translateY(-1px);
 }
-.header-social svg { width: 18px; height: 18px; }
+.header-social svg { width: 20px; height: 20px; }
 /* The band under the hero also shows local time, so the header clock goes first when space runs out. */
 @media (max-width: 63.99rem) {
   .header-clock { display: none; }
