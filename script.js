@@ -268,6 +268,8 @@
     var w = 0, h = 0;
     var px = -1e4, amp = 0, target = 0;
     var t0 = performance.now(), visible = true, running = false;
+    var phase = 0, last = 0, cx = 0;
+    var TAU = Math.PI * 2;
 
     function resize() {
       var dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -275,25 +277,21 @@
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cx = w / 2;
       if (reduce) drawStatic();
     }
 
-    function ch1(x, t) {
-      return h * 0.5 + Math.sin(x * 0.011 + t * 0.0015) * h * 0.1 + Math.sin(x * 0.027 - t * 0.0021) * h * 0.05;
+    // The beam runs in XY mode: a lemniscate of Bernoulli, the infinity sign.
+    function size() { return Math.min(h * 0.92, w * 0.28); }
+    function point(u, x0) {
+      var a = size(), s = Math.sin(u), c = Math.cos(u), d = 1 + s * s;
+      return [x0 + a * c / d, h * 0.5 + a * s * c / d];
     }
-    function ch2(x, t) {
-      return h * 0.5 + Math.sin(x * 0.006 - t * 0.0009 + 1.7) * h * 0.2;
-    }
-    function bump(x, t) {
-      if (amp < 0.002) return 0;
-      var g = Math.exp(-((x - px) * (x - px)) / (2 * 110 * 110));
-      return Math.sin(x * 0.085 - t * 0.011) * h * 0.32 * g * amp;
-    }
-    function trace(fn, t, limit, color, width, alpha) {
+    function loop(x0, color, width, alpha) {
       ctx.beginPath();
-      for (var x = 0; x <= limit; x += 3) {
-        var y = fn(x, t);
-        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      for (var i = 0; i <= 160; i++) {
+        var q = point(i / 160 * TAU, x0);
+        if (i === 0) ctx.moveTo(q[0], q[1]); else ctx.lineTo(q[0], q[1]);
       }
       ctx.globalAlpha = alpha;
       ctx.strokeStyle = color;
@@ -303,38 +301,61 @@
     }
     function drawStatic() {
       ctx.clearRect(0, 0, w, h);
-      trace(ch2, 0, w, ice, 1, 0.45);
-      trace(ch1, 0, w, amber, 1.75, 1);
+      loop(w / 2, ice, 1, 0.35);
+      loop(w / 2, amber, 1.75, 1);
     }
 
     function frame(now) {
       if (!visible || doc.hidden) { running = false; return; }
-      var t = now - t0;
+      var dt = last ? Math.min(now - last, 50) : 16;
+      last = now;
       amp += (target - amp) * 0.06;
+      phase += dt * 0.0013 * (1 + amp * 1.6);
+      // Drift toward the pointer while it is over the hero.
+      var aim = amp > 0.01 ? clamp(px, w * 0.35, w * 0.65) : w / 2;
+      cx += (aim - cx) * 0.04;
 
-      // Fade the previous frame instead of clearing it, for a phosphor trail.
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = "rgba(0,0,0,0.22)";
-      ctx.fillRect(0, 0, w, h);
-      ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, w, h);
+      // Intro: the outline sweeps in, then stays as a faint reference trace.
+      var p = clamp((now - t0) / 1700, 0, 1);
+      var reveal = 1 - Math.pow(1 - p, 3);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, w * reveal, h);
+      ctx.clip();
+      loop(cx, ice, 1, 0.5);
+      ctx.restore();
 
-      var p = clamp(t / 1700, 0, 1);
-      var limit = w * (1 - Math.pow(1 - p, 3));
-      trace(ch2, t, limit, ice, 1, 0.45);
-      trace(function (x, tt) { return ch1(x, tt) + bump(x, tt); }, t, limit, amber, 1.75, 1);
-
-      if (p < 1) {
+      // Phosphor trail: older segments fade and thin out behind the beam.
+      var trail = TAU * 0.85, steps = 120, prev = point(phase - trail, cx);
+      ctx.lineCap = "round";
+      ctx.strokeStyle = amber;
+      for (var i = 1; i <= steps; i++) {
+        var k = i / steps, q = point(phase - trail + trail * k, cx);
+        ctx.globalAlpha = 0.08 + 0.92 * Math.pow(k, 1.5);
+        ctx.lineWidth = 0.6 + k * 1.6;
         ctx.beginPath();
-        ctx.arc(limit, ch1(limit, t), 3, 0, Math.PI * 2);
-        ctx.fillStyle = amber;
-        ctx.fill();
+        ctx.moveTo(prev[0], prev[1]);
+        ctx.lineTo(q[0], q[1]);
+        ctx.stroke();
+        prev = q;
       }
+      ctx.globalAlpha = 1;
+
+      ctx.beginPath();
+      ctx.arc(prev[0], prev[1], 3.5, 0, TAU);
+      ctx.fillStyle = amber;
+      ctx.shadowColor = amber;
+      ctx.shadowBlur = 14;
+      ctx.fill();
+      ctx.shadowBlur = 0;
       requestAnimationFrame(frame);
     }
 
     function start() {
       if (reduce || running || !visible || doc.hidden) return;
       running = true;
+      last = 0;
       requestAnimationFrame(frame);
     }
 
